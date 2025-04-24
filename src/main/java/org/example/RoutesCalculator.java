@@ -131,7 +131,7 @@ public class RoutesCalculator {
         }
         return null;
     }
-
+    @Nullable
     public static HashMap<String,Long> calculateTravelTime(Apartment origin , Waypoint destination) {
         try {
             RoutesClient client = buildRoutesClient();
@@ -148,19 +148,19 @@ public class RoutesCalculator {
     @Nullable
     private static HashMap<String, Long> getRoutes(ComputeRoutesResponse response, ComputeRoutesResponse walkingResponse) {
         HashMap<String,Long> routes = extractTransitModes(response, walkingResponse);
-        List<Long> times = new ArrayList<Long>(routes.values());
-        if (times.stream().anyMatch(duration-> duration <= 30 )){
-            return routes;
-        } else {
-            return null;
+        if (routes != null){
+            List<Long> times = new ArrayList<Long>(routes.values());
+            if (times.stream().anyMatch(duration-> duration <= 30 )){
+                return routes;
+            }
         }
+        return null;
     }
-
+    @Nullable
     private static HashMap<String,Long> extractTransitModes(ComputeRoutesResponse response, ComputeRoutesResponse walkingResponse) {
         HashMap<String,Long> transitLinesWithDuration = null;
         Route walkingRoute = walkingResponse.getRoutesList().getFirst();
         if (response.getRoutesCount() > 0) {
-            System.out.println("Routes calculated:"+response.getRoutesCount());
             transitLinesWithDuration = new HashMap<String,Long>();
             transitLinesWithDuration.put("Walking", Math.floorDiv(walkingRoute.getDuration().getSeconds(),60));
             for (Route route : response.getRoutesList()) {
