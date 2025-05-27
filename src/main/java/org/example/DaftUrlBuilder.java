@@ -54,7 +54,7 @@ public class DaftUrlBuilder implements Iterator<String> {
     public DaftUrlBuilder(int washingMachine, int dishwasher, int totalPages) {
         this.totalPages = totalPages;
         //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d&sort=publishDateDesc";
+        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-30d/d&sort=publishDateDesc";
         if (washingMachine == 1) {
             baseUrl += "&facilities=washing-machine";
         }
@@ -65,7 +65,7 @@ public class DaftUrlBuilder implements Iterator<String> {
     }
     public DaftUrlBuilder(int washingMachine, int dishwasher) throws IOException, InterruptedException {
         //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d&sort=publishDateDesc";
+        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-30d/d&sort=publishDateDesc";
         if (washingMachine == 1) {
             baseUrl += "&facilities=washing-machine";
         }

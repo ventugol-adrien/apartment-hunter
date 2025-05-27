@@ -1,7 +1,6 @@
 package org.example;
 
 import com.google.api.gax.core.NoCredentialsProvider;
-import com.google.gson.Gson;
 import com.google.maps.routing.v2.*;
 import com.google.protobuf.Duration;
 import com.google.type.LatLng;
@@ -162,7 +161,7 @@ public class RoutesCalculator {
         Route walkingRoute = walkingResponse.getRoutesList().getFirst();
         if (response.getRoutesCount() > 0) {
             transitLinesWithDuration = new HashMap<String,Long>();
-            transitLinesWithDuration.put("Walking", Math.floorDiv(walkingRoute.getDuration().getSeconds(),60));
+            transitLinesWithDuration.put("walk", Math.floorDiv(walkingRoute.getDuration().getSeconds(),60));
             for (Route route : response.getRoutesList()) {
                 Duration routeDurationSeconds = route.getDuration(); // Get the route duration in seconds.
                 long duration =  Math.floorDiv(routeDurationSeconds.getSeconds(),60);
@@ -175,10 +174,10 @@ public class RoutesCalculator {
 
                             if (!displayName.isEmpty()) {
                                 String name = switch (displayName) {
-                                    case "Green" -> "Green Line";
-                                    case "Red Line" -> "Red Line";
-                                    case "Dart" -> "Dart";
-                                    default -> "Bus";
+                                    case "Green" -> "green";
+                                    case "Red Line" -> "red";
+                                    case "Dart" -> "dart";
+                                    default -> "bus";
                                 };
                                 if (!transitLinesWithDuration.containsKey(name) || Math.floorDiv(routeDurationSeconds.getSeconds(),60) < transitLinesWithDuration.get(name)){
                                     transitLinesWithDuration.put(name, duration);
