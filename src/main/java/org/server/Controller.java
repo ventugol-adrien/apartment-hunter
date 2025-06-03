@@ -1,7 +1,7 @@
 package org.server;
 
 import org.springframework.web.bind.annotation.*;
-import org.example.Main;
+import org.example.ApartmentFetcher;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -71,7 +71,7 @@ public class Controller {
         public String createCollection() throws IOException, InterruptedException {
         System.out.println("Post request received at: " + OffsetDateTime.now());
         apartmentClient.createCollection();
-        Main.apartments(lastPollingTime);
+        ApartmentFetcher.apartments(lastPollingTime);
         apartmentClient.insertPoll();
         return  "Collection populated successfully.";
         }
@@ -79,7 +79,7 @@ public class Controller {
     @PutMapping("/apartments")
     public String updateCollection() throws IOException, InterruptedException {
         System.out.println("Put request received at: " + OffsetDateTime.now());
-        Main.apartments(apartmentClient.getLatestPoll());
+        ApartmentFetcher.apartments(apartmentClient.getLatestPoll());
         apartmentClient.updateLastPollingTime();
         return  "Collection updated successfully.";
     }

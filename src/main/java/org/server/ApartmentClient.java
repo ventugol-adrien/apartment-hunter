@@ -29,8 +29,9 @@ public class ApartmentClient {
     private final MongoClientSettings settings;
     private HashMap<String, MongoCollection<Document>> collections = new HashMap<>();
     private MongoClient mongoClient;
+    private static final SecretManager secretManager = new SecretManager();
     public ApartmentClient(){
-        String connectionString = String.format("mongodb+srv://admin:%s@cluster0.akpza.mongodb.net/?appName=Cluster0",System.getenv("DB_PWD"));
+        String connectionString = String.format("mongodb+srv://admin:%s@cluster0.akpza.mongodb.net/?appName=Cluster0",secretManager.getSecret("DB_PWD"));
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();

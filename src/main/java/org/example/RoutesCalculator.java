@@ -5,6 +5,7 @@ import com.google.maps.routing.v2.*;
 import com.google.protobuf.Duration;
 import com.google.type.LatLng;
 import org.jetbrains.annotations.Nullable;
+import org.server.SecretManager;
 
 import java.io.IOException;
 import java.util.*;
@@ -13,7 +14,7 @@ public class RoutesCalculator {
 
     private static final Waypoint willyFries = buildWaypoint(53.3438192,-6.2413203);
     private static final Waypoint Smithfield = buildWaypoint(53.347097, -6.2803257);
-    
+    private static final SecretManager secretManager = new SecretManager();
     public static Waypoint getWillyFries() {
         return willyFries;
     };
@@ -35,7 +36,7 @@ public class RoutesCalculator {
 
     }
     private static RoutesClient buildRoutesClient() throws IOException {
-        String apiKey = System.getenv("MAPS_KEY");
+        String apiKey = secretManager.getSecret("MAPS_KEY");
         return RoutesClient.create(RoutesSettings.newBuilder()
                 .setHeaderProvider(() -> {
                     Map<String, String> headers = new HashMap<>();

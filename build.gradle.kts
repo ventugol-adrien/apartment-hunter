@@ -17,6 +17,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(platform("org.mongodb:mongodb-driver-bom:5.4.0"))
     implementation("org.mongodb:mongodb-driver-sync")
+    implementation(platform("software.amazon.awssdk:bom:2.27.21"))
+    implementation("software.amazon.awssdk:secretsmanager")
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("org.springframework.boot:spring-boot-starter")
