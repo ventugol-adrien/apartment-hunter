@@ -17,60 +17,19 @@ import java.util.Iterator;
 
 public class DaftUrlBuilder implements Iterator<String> {
     private final String url;
-    private int totalPages;
+    private final int totalPages;
     private int pageNumber = 0;
-    public DaftUrlBuilder(int washingMachine, int dishwasher, PublishedInterval interval, SortOrder sortOrder, int totalPages) {
-        this.totalPages = totalPages;
-        //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/ireland/apartments?rentalPrice_to=4000&numBeds_from=2";
+
+    public DaftUrlBuilder(int washingMachine, int dishwasher, int dryer) throws IOException, InterruptedException {
+        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&numBaths_from=2&sort=publishDateDesc";
         if (washingMachine == 1) {
             baseUrl += "&facilities=washing-machine";
         }
         if (dishwasher == 1) {
             baseUrl += "&facilities=dishwasher";
         }
-        if (interval != null) {
-            baseUrl += "&firstPublishDate_from=" + interval.getValue();
-        }
-        if (sortOrder != null) {
-            baseUrl += "&sort=" + sortOrder.getValue();
-        }
-        this.url = baseUrl;
-    }
-    public DaftUrlBuilder(int washingMachine, int dishwasher, PublishedInterval interval) {
-        this.totalPages = totalPages;
-        //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2";
-        baseUrl += interval.getValue();
-        baseUrl += "&sort=publishDateDesc";
-        if (washingMachine == 1) {
-            baseUrl += "&facilities=washing-machine";
-        }
-        if (dishwasher == 1) {
-            baseUrl += "&facilities=dishwasher";
-        }
-        this.url = baseUrl;
-    }
-    public DaftUrlBuilder(int washingMachine, int dishwasher, int totalPages) {
-        this.totalPages = totalPages;
-        //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-30d/d&sort=publishDateDesc";
-        if (washingMachine == 1) {
-            baseUrl += "&facilities=washing-machine";
-        }
-        if (dishwasher == 1) {
-            baseUrl += "&facilities=dishwasher";
-        }
-        this.url = baseUrl;
-    }
-    public DaftUrlBuilder(int washingMachine, int dishwasher) throws IOException, InterruptedException {
-        //https://www.daft.ie/property-for-rent/dublin-city?adState=published&sort=publishDateDesc&facilities=dishwasher&facilities=washing-machine&rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-14d/d
-        String baseUrl = "https://www.daft.ie/property-for-rent/dublin-city/apartments?rentalPrice_to=4000&numBeds_from=2&firstPublishDate_from=now-30d/d&sort=publishDateDesc";
-        if (washingMachine == 1) {
-            baseUrl += "&facilities=washing-machine";
-        }
-        if (dishwasher == 1) {
-            baseUrl += "&facilities=dishwasher";
+        if (dryer == 1) {
+            baseUrl += "&facilities=dryer";
         }
         this.url = baseUrl;
         this.totalPages = getTotalPages(this.url);
@@ -119,9 +78,6 @@ public class DaftUrlBuilder implements Iterator<String> {
     public String getUrl() {
         return this.url;
     }
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
 
     @Override
     public boolean hasNext() {
@@ -134,10 +90,9 @@ public class DaftUrlBuilder implements Iterator<String> {
         if (!this.hasNext()) {
             throw new IllegalStateException("No more pages to iterate");
         }
-        String nextUrl = this.url;
         if (from > 0){
             this.pageNumber++;
-            return this.getUrl() + "&from=" + from +"&pageSize=20";
+            return this.getUrl() +"&pageSize=20"+ "&page=" + this.pageNumber;
         }
         this.pageNumber++;
         return this.getUrl();

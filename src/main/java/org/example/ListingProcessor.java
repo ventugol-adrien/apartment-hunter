@@ -108,7 +108,7 @@ public class ListingProcessor extends Thread{
     }
 
     private String makeUrl() {
-        return (String.format("https://www.daft.ie/%s", extractSEOFriendlyPath()));
+        return (String.format("https://www.daft.ie%s", extractSEOFriendlyPath()));
     }
     public void run(){
         String listingUrl = makeUrl();

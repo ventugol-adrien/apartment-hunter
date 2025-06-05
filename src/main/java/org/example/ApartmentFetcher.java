@@ -42,11 +42,12 @@ public class ApartmentFetcher {
 
 
     public static void apartments(OffsetDateTime lastPollingTime) throws IOException, InterruptedException {
-        DaftUrlBuilder urlBuilder = new DaftUrlBuilder(1, 1);
+        DaftUrlBuilder urlBuilder = new DaftUrlBuilder(1, 1,1);
         List<Apartment> apartments = new ArrayList<>();
         ApartmentClient mongoClient = new ApartmentClient();
         while (urlBuilder.hasNext()) {
             String url = urlBuilder.next();
+            System.out.println("Fetching apartments from: " + url);
             String html = getListingsHTML(url);
             Document document = Jsoup.parse(html);
             Element script = document.select("script#__NEXT_DATA__[type=application/json][crossorigin=anonymous]").first();

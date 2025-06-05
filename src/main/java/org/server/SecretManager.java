@@ -7,8 +7,6 @@ import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueReques
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
 import software.amazon.awssdk.services.secretsmanager.model.SecretsManagerException;
 
-import java.util.HashMap;
-
 public class SecretManager {
     private final JsonObject secrets;
     public SecretManager() {
@@ -18,7 +16,6 @@ public class SecretManager {
         // Create a Secrets Manager client
         SecretsManagerClient client = SecretsManagerClient.builder()
                 .region(region)
-                .credentialsProvider(ProfileCredentialsProvider.create("apartment-hunter"))
                 .build();
 
         GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()

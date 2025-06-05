@@ -1,0 +1,1 @@
+aws ecr create-repository --repository-name ventugoladrien/apartment-hunter --region eu-west-1 --image-scanning-configuration scanOnPush=true --profile apartment-hunter

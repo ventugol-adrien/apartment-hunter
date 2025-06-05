@@ -29,9 +29,16 @@ public class ApartmentClient {
     private final MongoClientSettings settings;
     private HashMap<String, MongoCollection<Document>> collections = new HashMap<>();
     private MongoClient mongoClient;
-    private static final SecretManager secretManager = new SecretManager();
+    private static String getDbPassword() {
+        try {
+            return new SecretManager().getSecret("DB_PWD");
+        } catch (Exception e) {
+            return System.getenv("DB_PWD");
+        }
+    }
     public ApartmentClient(){
-        String connectionString = String.format("mongodb+srv://admin:%s@cluster0.akpza.mongodb.net/?appName=Cluster0",secretManager.getSecret("DB_PWD"));
+        String connectionString = String.format("mongodb+srv://admin:%s@cluster0.akpza.mongodb.net/?appName=Cluster0",getDbPassword());
+        System.out.print(connectionString);
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
@@ -53,16 +60,16 @@ public class ApartmentClient {
         Document query = new Document();
         List<Document> orConditions = new ArrayList<>();
 
-        if (walking == 1) {
-            orConditions.add(new Document("itineraries.walk", new Document("$lte", 20)));
+        if (walking > 1) {
+            orConditions.add(new Document("itineraries.walk", new Document("$lte", walking)));
         }
-        if (tram == 1) {
-            orConditions.add(new Document("itineraries.red", new Document("$lte", 30)));
-            orConditions.add(new Document("itineraries.green", new Document("$lte", 30)));
-            orConditions.add(new Document("itineraries.dart", new Document("$lte", 30)));
+        if (tram > 1) {
+            orConditions.add(new Document("itineraries.red", new Document("$lte", tram)));
+            orConditions.add(new Document("itineraries.green", new Document("$lte", tram)));
+            orConditions.add(new Document("itineraries.dart", new Document("$lte", tram)));
         }
-        if (bus == 1) {
-            orConditions.add(new Document("itineraries.bus", new Document("$lte", 30)));
+        if (bus > 1) {
+            orConditions.add(new Document("itineraries.bus", new Document("$lte", bus)));
         }
         if (!orConditions.isEmpty()) {
             query.put("$or", orConditions);
@@ -189,7 +196,7 @@ public class ApartmentClient {
                 System.out.println("Found apartment: " + foundApartment.toJson());
                 return true;
             }
-            System.out.println("No apartment found with the given URL.");
+            System.out.println("No apartment found with the given URL, safe to insert "+ apartment.getTitle());
             return false;
         } catch (MongoException e) {
             throw new MongoException("Failed to query for apartment with url: " + apartment.getUrl(), e);

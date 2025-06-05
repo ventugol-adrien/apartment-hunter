@@ -36,6 +36,9 @@ public class Apartment extends Document {
         this.companyProbability = companyProbability;
 
     }
+    public String getTitle() {
+        return this.title;
+    }
 
     public Waypoint getLocation() {
         return this.location;

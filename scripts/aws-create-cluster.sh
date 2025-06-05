@@ -1,0 +1,1 @@
+aws ecs create-cluster --profile apartment-hunter --region eu-west-1 --cluster-name apartment-hunter-cluster --capacity-providers FARGATE_SPOT

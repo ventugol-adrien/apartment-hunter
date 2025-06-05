@@ -1,0 +1,1 @@
+aws ecr get-login-password --region eu-west-1 --profile apartment-hunter | docker login --username AWS --password-stdin 763927202345.dkr.ecr.eu-west-1.amazonaws.com

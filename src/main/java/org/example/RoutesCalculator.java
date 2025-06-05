@@ -14,7 +14,6 @@ public class RoutesCalculator {
 
     private static final Waypoint willyFries = buildWaypoint(53.3438192,-6.2413203);
     private static final Waypoint Smithfield = buildWaypoint(53.347097, -6.2803257);
-    private static final SecretManager secretManager = new SecretManager();
     public static Waypoint getWillyFries() {
         return willyFries;
     };
@@ -35,13 +34,20 @@ public class RoutesCalculator {
         System.out.println(calculateTravelTime(waypoint1, waypoint2));
 
     }
+    private static String getApiKey() {
+        try {
+            return new SecretManager().getSecret("MAPS_KEY");
+        } catch (Exception e) {
+            System.err.println("Failed to retrieve API key from Secrets Manager: " + e.getMessage());
+            return System.getenv("MAPS_KEY");
+        }
+    }
     private static RoutesClient buildRoutesClient() throws IOException {
-        String apiKey = secretManager.getSecret("MAPS_KEY");
         return RoutesClient.create(RoutesSettings.newBuilder()
                 .setHeaderProvider(() -> {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("X-Goog-FieldMask", "routes.duration,routes.legs.steps.transit_details");
-                    headers.put("x-goog-api-key", apiKey);
+                    headers.put("x-goog-api-key", getApiKey());
                     return headers;
                 })
                 .setCredentialsProvider(NoCredentialsProvider.create()) // Disable ADC
